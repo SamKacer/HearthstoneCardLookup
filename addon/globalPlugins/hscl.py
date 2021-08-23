@@ -7,15 +7,28 @@
 import api
 import globalPluginHandler
 from scriptHandler import script
+from threading import Thread
 from textInfos import POSITION_SELECTION
-from ui import browseableMessage
+import ui
+from urllib.error import HTTPError
+from urllib.parse import quote
+from urllib.request import urlopen
 
 class GlobalPlugin(globalPluginHandler.GlobalPlugin):
 	@script("Lookup Hearthstone card info.", gesture="kb:NVDA+H")
 	def script_lookup(self, gesture):
-		selection = getSelectedText()
+		selection = getSelectedText().strip()
 		if selection:
-			browseableMessage(selection)	
+			Thread(target=lookupCardInfo, args=(selection, )).start()
+
+
+def lookupCardInfo(cardName: str) -> None:
+	url = 'https://hearthstone.fandom.com/wiki/' + quote(cardName)
+	try:
+		response = urlopen(url)
+		ui.browseableMessage(f"status: {response.status}")
+	except HTTPError as e:
+		ui.message(f"Couldn't get card info for {selection}: {e}")
 
 # from quick dictionary addon by 
 def getSelectedText() -> str:
