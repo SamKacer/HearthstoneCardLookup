@@ -39,6 +39,9 @@ def lookupCardInfo(cardName: str) -> None:
 		attack = matchNumberBeforeImg("Attack", bs)
 		health = matchNumberBeforeImg("Health", bs)
 
+		match = re.search(r'(?sm)Flavor text</div>.*?<p><i>(.*?)</i>', bs)
+		flavor = match.group(1) if match else None
+
 		ui.browseableMessage('\n'.join(
 			filter(
 				lambda f: f is not None,
@@ -51,6 +54,7 @@ def lookupCardInfo(cardName: str) -> None:
 					class_,
 					rarity,
 					set,
+					flavor,
 				)
 			)
 		))
