@@ -28,21 +28,20 @@ def lookupCardInfo(cardName: str) -> None:
 	url = 'https://hearthstone.fandom.com/wiki/' + quote(cardName)
 	try:
 		response = urlopen(url)
-		bs = response.read().decode('utf-8')
-		# bs = re.sub(r'(?sm)<script.*>.*</script>', "", bs)
-		set = matchImage("Set", bs)
-		class_ = matchImage("Class", bs)
-		type = matchLink("Type", bs)
-		school = matchLink("Spell school", bs)
-		rarity = matchImage("Rarity", bs) or matchLink("Rarity", bs)
-		cost = matchNumberBeforeImg("Cost", bs)
-		attack = matchNumberBeforeImg("Attack", bs)
-		health = matchNumberBeforeImg("Health", bs)
+		data = response.read().decode('utf-8')
+		set = matchImage("Set", data)
+		class_ = matchImage("Class", data)
+		type = matchLink("Type", data)
+		school = matchLink("Spell school", data)
+		rarity = matchImage("Rarity", data) or matchLink("Rarity", data)
+		cost = matchNumberBeforeImg("Cost", data)
+		attack = matchNumberBeforeImg("Attack", data)
+		health = matchNumberBeforeImg("Health", data)
 
-		match = re.search(r'(?sm)Flavor text</div>.*?<p><i>(.*?)</i>', bs)
+		match = re.search(r'(?sm)Flavor text</div>.*?<p><i>(.*?)</i>', data)
 		flavor = match.group(1) if match else None
 
-		match = re.search(r'(?sm)</table></div>(.*?)<div', bs)
+		match = re.search(r'(?sm)</table></div>(.*?)<div', data)
 		text = re.sub(r'(<b>)|(</b>)', "", match.group(1)) if match else None
 
 		ui.browseableMessage('\n'.join(
@@ -70,15 +69,17 @@ def th_re(label: str) -> str:
 
 def matchImage(label: str, string: str) -> Optional[str]:
 	row = matchRow(label, string)
-	m = re.search(th_re(label) + r'.*?<td>.*?alt="(.*?)".*?</td>', row)
+	m = re.search(th_re(label) + r'.*?<td>.*?alt="(.*?)".*?</td>', row) if row else None
 	return m.group(1).strip() if m else None
 
 def matchLink(label: str, string: str) -> Optional[str]:
-	m = re.search(th_re(label) + r'.*?<td>.*?<a.*?>(.*?)</a>', string)
+	row = matchRow(label, string)
+	m = re.search(th_re(label) + r'.*?<td>.*?<a.*?>(.*?)</a>', row) if row else None
 	return m.group(1).strip() if m else None
 
 def matchNumberBeforeImg(label: str, string: str) -> Optional[str]:
-	m = re.search(th_re(label) + r'.*?<td>(.*?)<img', string)
+	row = matchRow(label, string)
+	m = re.search(th_re(label) + r'.*?<td>(.*?)<img', row) if row else None
 	return m.group(1).strip() if m else None
 
 def matchRow(label:str, string: str) -> Optional[str]:
