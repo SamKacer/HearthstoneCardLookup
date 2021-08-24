@@ -44,7 +44,7 @@ def lookupCardInfo(cardName: str) -> None:
 		match = re.search(r'(?sm)</table></div>(.*?)<div', data)
 		text = re.sub(r'(<b>)|(</b>)', "", match.group(1)) if match else None
 
-		ui.browseableMessage('\n'.join(
+		ui.browseableMessage('<p>' + '</p>\n<p>'.join(
 			filter(
 				lambda f: f is not None,
 				(
@@ -60,7 +60,7 @@ def lookupCardInfo(cardName: str) -> None:
 					flavor,
 				)
 			)
-		))
+		) + '</p>', cardName, True)
 	except HTTPError as e:
 		ui.message(f"Couldn't get card info for {cardName}: {e}")
 
