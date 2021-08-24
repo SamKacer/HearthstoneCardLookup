@@ -33,6 +33,7 @@ def lookupCardInfo(cardName: str) -> None:
 		class_ = matchImage("Class", data)
 		type = matchLink("Type", data)
 		school = matchLink("Spell school", data)
+		minionType = matchLink("Minion type", data)
 		rarity = matchImage("Rarity", data) or matchLink("Rarity", data)
 		cost = matchNumberBeforeImg("Cost", data)
 		attack = matchNumberBeforeImg("Attack", data)
@@ -52,6 +53,7 @@ def lookupCardInfo(cardName: str) -> None:
 					f"{cost} mana",
 					f"{attack} {health}" if attack and health else None,
 					text,
+					minionType,
 					school,
 					type,
 					class_,
