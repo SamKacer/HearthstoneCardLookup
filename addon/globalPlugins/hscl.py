@@ -4,8 +4,10 @@
 # author: Samuel Kacer <samuel.kacer@gmail.com>
 # <home page>
 
+from typing import Optional
 import api
 import globalPluginHandler
+import re
 from scriptHandler import script
 from threading import Thread
 from textInfos import POSITION_SELECTION
@@ -26,9 +28,19 @@ def lookupCardInfo(cardName: str) -> None:
 	url = 'https://hearthstone.fandom.com/wiki/' + quote(cardName)
 	try:
 		response = urlopen(url)
-		ui.browseableMessage(f"status: {response.status}")
+		bs = response.read().decode('utf-8')
+		# bs = re.sub(r'(?sm)<script.*>.*</script>', "", bs)
+		set = matchImage("Set", bs)
+		ui.browseableMessage(set)
 	except HTTPError as e:
-		ui.message(f"Couldn't get card info for {selection}: {e}")
+		ui.message(f"Couldn't get card info for {cardName}: {e}")
+
+def th_re(label: str) -> str:
+	return r'<th>' + label + ':' + '</th>'
+
+def matchImage(label: str, string: str) -> Optional[str]:
+	m = re.search(th_re(label) + r'.*?<td>.*?alt="(.*?)"', string)
+	return m.group(1).strip() if m else None
 
 # from quick dictionary addon by 
 def getSelectedText() -> str:
