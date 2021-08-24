@@ -2,6 +2,8 @@
 
 This is an NVDA addon that lets users quickly lookup info for a specific Hearthstone card by its name.
 
+- [download stable version](https://github.com/SamKacer/HearthstoneCardLookup/releases/download/v0.1/HearthstoneCardLookup-0.1.nvda-addon)
+
 ## Usage
 
 Either select the text of a card name or have it copied to your clipboard, then press NVDA + H, which will try to find the card info and display it in a pop-up browseable window.
