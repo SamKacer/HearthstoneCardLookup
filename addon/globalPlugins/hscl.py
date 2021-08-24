@@ -34,13 +34,16 @@ def lookupCardInfo(cardName: str) -> None:
 		class_ = matchImage("Class", bs)
 		type = matchLink("Type", bs)
 		school = matchLink("Spell school", bs)
-		rarity = matchLink("Rarity", bs)
+		rarity = matchImage("Rarity", bs) or matchLink("Rarity", bs)
 		cost = matchNumberBeforeImg("Cost", bs)
 		attack = matchNumberBeforeImg("Attack", bs)
 		health = matchNumberBeforeImg("Health", bs)
 
 		match = re.search(r'(?sm)Flavor text</div>.*?<p><i>(.*?)</i>', bs)
 		flavor = match.group(1) if match else None
+
+		match = re.search(r'(?sm)</table></div>(.*?)<div', bs)
+		text = re.sub(r'(<b>)|(</b>)', "", match.group(1)) if match else None
 
 		ui.browseableMessage('\n'.join(
 			filter(
@@ -49,6 +52,7 @@ def lookupCardInfo(cardName: str) -> None:
 					cardName,
 					f"{cost} mana",
 					f"{attack} {health}" if attack and health else None,
+					text,
 					school,
 					type,
 					class_,
@@ -65,7 +69,8 @@ def th_re(label: str) -> str:
 	return r'<th>' + label + ':' + '</th>'
 
 def matchImage(label: str, string: str) -> Optional[str]:
-	m = re.search(th_re(label) + r'.*?<td>.*?alt="(.*?)"', string)
+	row = matchRow(label, string)
+	m = re.search(th_re(label) + r'.*?<td>.*?alt="(.*?)".*?</td>', row)
 	return m.group(1).strip() if m else None
 
 def matchLink(label: str, string: str) -> Optional[str]:
@@ -75,6 +80,10 @@ def matchLink(label: str, string: str) -> Optional[str]:
 def matchNumberBeforeImg(label: str, string: str) -> Optional[str]:
 	m = re.search(th_re(label) + r'.*?<td>(.*?)<img', string)
 	return m.group(1).strip() if m else None
+
+def matchRow(label:str, string: str) -> Optional[str]:
+	match = re.search(th_re(label) + r'.*?</tr>', string)
+	return match.group() if match else None
 
 # from quick dictionary addon by 
 def getSelectedText() -> str:
