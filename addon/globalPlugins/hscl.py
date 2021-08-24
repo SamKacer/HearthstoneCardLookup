@@ -2,7 +2,7 @@
 # Copyright (C) 2021 Samuel Kacer
 #GNU GENERAL PUBLIC LICENSE V2
 # author: Samuel Kacer <samuel.kacer@gmail.com>
-# <home page>
+# https://github.com/SamKacer/HearthstoneCardLookup
 
 from typing import Optional
 import api

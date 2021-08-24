@@ -25,3 +25,7 @@ If you haven't heard the Tirion Fordring theme song, it's because it doesn't exi
 ### v0.1
 
 - initial release
+
+## [Homepage](https://github.com/SamKacer/HearthstoneCardLookup)
+
+Use this github to post issues with the addon.
