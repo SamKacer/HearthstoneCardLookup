@@ -86,7 +86,7 @@ def matchRow(label:str, string: str) -> Optional[str]:
 	match = re.search(th_re(label) + r'.*?</tr>', string)
 	return match.group() if match else None
 
-# from quick dictionary addon by 
+# adapted from Quick Dictionary by Oleksandr Gryshchenko <grisov.nvaccess@mailnull.com>
 def getSelectedText() -> str:
 	"""Retrieve the selected text.
 	If the selected text is missing - extract the text from the clipboard.
