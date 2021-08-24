@@ -31,7 +31,29 @@ def lookupCardInfo(cardName: str) -> None:
 		bs = response.read().decode('utf-8')
 		# bs = re.sub(r'(?sm)<script.*>.*</script>', "", bs)
 		set = matchImage("Set", bs)
-		ui.browseableMessage(set)
+		class_ = matchImage("Class", bs)
+		type = matchLink("Type", bs)
+		school = matchLink("Spell school", bs)
+		rarity = matchLink("Rarity", bs)
+		cost = matchNumberBeforeImg("Cost", bs)
+		attack = matchNumberBeforeImg("Attack", bs)
+		health = matchNumberBeforeImg("Health", bs)
+
+		ui.browseableMessage('\n'.join(
+			filter(
+				lambda f: f is not None,
+				(
+					cardName,
+					f"{cost} mana",
+					f"{attack} {health}" if attack and health else None,
+					school,
+					type,
+					class_,
+					rarity,
+					set,
+				)
+			)
+		))
 	except HTTPError as e:
 		ui.message(f"Couldn't get card info for {cardName}: {e}")
 
@@ -40,6 +62,14 @@ def th_re(label: str) -> str:
 
 def matchImage(label: str, string: str) -> Optional[str]:
 	m = re.search(th_re(label) + r'.*?<td>.*?alt="(.*?)"', string)
+	return m.group(1).strip() if m else None
+
+def matchLink(label: str, string: str) -> Optional[str]:
+	m = re.search(th_re(label) + r'.*?<td>.*?<a.*?>(.*?)</a>', string)
+	return m.group(1).strip() if m else None
+
+def matchNumberBeforeImg(label: str, string: str) -> Optional[str]:
+	m = re.search(th_re(label) + r'.*?<td>(.*?)<img', string)
 	return m.group(1).strip() if m else None
 
 # from quick dictionary addon by 
