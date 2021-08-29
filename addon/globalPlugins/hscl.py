@@ -51,7 +51,7 @@ def lookupCardInfo(cardName: str) -> None:
 				lambda f: f is not None,
 				(
 					cardName,
-					f"{cost} mana",
+					f"{cost} mana" if cost else None,
 					f"{attack} {health or durability}" if attack and (health or durability) else None,
 					text,
 					minionType,
