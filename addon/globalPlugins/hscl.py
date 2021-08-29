@@ -38,6 +38,7 @@ def lookupCardInfo(cardName: str) -> None:
 		cost = matchNumberBeforeImg("Cost", data)
 		attack = matchNumberBeforeImg("Attack", data)
 		health = matchNumberBeforeImg("Health", data)
+		durability = matchNumberBeforeImg("Durability", data)
 
 		match = re.search(r'(?sm)Flavor text</div>.*?<p><i>(.*?)</i>', data)
 		flavor = match.group(1) if match else None
@@ -51,7 +52,7 @@ def lookupCardInfo(cardName: str) -> None:
 				(
 					cardName,
 					f"{cost} mana",
-					f"{attack} {health}" if attack and health else None,
+					f"{attack} {health or durability}" if attack and (health or durability) else None,
 					text,
 					minionType,
 					school,
