@@ -2,7 +2,7 @@
 
 This is an NVDA addon that lets users quickly lookup info for a specific Hearthstone card by its name.
 
-- [download stable version](https://github.com/SamKacer/HearthstoneCardLookup/releases/download/v0.2/HearthstoneCardLookup-0.2.nvda-addon)
+- [download stable version](https://github.com/SamKacer/HearthstoneCardLookup/releases/download/v0.3/HearthstoneCardLookup-0.3.nvda-addon)
 
 ## Usage
 
@@ -23,6 +23,12 @@ If you haven't heard the Tirion Fordring theme song, it's because it doesn't exi
 ``` 	
 
 ## Changelog
+
+### v0.3
+
+-     Fix stats sometimes not displaying for weapons
+-     Dont display mana cost for costless cards
+-     Make possible to lookup cards as listed on top decks
 
 ###v0.2
 
