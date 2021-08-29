@@ -21,6 +21,8 @@ class GlobalPlugin(globalPluginHandler.GlobalPlugin):
 	def script_lookup(self, gesture):
 		selection = getSelectedText().strip()
 		if selection:
+			if   "’" in selection:
+				selection = selection.replace("’", "'")
 			Thread(target=lookupCardInfo, args=(selection, )).start()
 
 
@@ -65,7 +67,15 @@ def lookupCardInfo(cardName: str) -> None:
 			)
 		) + '</p>', cardName, True)
 	except HTTPError as e:
+		if e.code == 404:
+			# in some webpages, namely top decks, all letters are capital, which is 404 in wiki
+			# Capitalize all words except for exceptions, but always capitalize the first
+			capitalized = " ".join(word.capitalize() if i == 0 or word.lower() not in LITTLE_WORDS else word.lower() for i, word in enumerate(cardName.split()))
+			if capitalized != cardName:
+				return lookupCardInfo(capitalized)
 		ui.message(f"Couldn't get card info for {cardName}: {e}")
+
+LITTLE_WORDS = {'the', 'a', 'to', 'for', 'of', 'in'}
 
 def th_re(label: str) -> str:
 	return r'<th>' + label + ':' + '</th>'
