@@ -32,6 +32,7 @@ def lookupCardInfo(cardName: str) -> None:
 		response = urlopen(url)
 		data = response.read().decode('utf-8')
 		set = matchImage("Set", data)
+		multiClass = matchLink("Multiclass", data)
 		class_ = matchImage("Class", data)
 		type = matchLink("Type", data)
 		school = matchLink("Spell school", data)
@@ -59,7 +60,7 @@ def lookupCardInfo(cardName: str) -> None:
 					minionType,
 					school,
 					type,
-					class_,
+					multiClass or class_,
 					rarity,
 					set,
 					flavor,
