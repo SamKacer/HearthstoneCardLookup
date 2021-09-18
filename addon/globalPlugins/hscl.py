@@ -4,7 +4,7 @@
 # author: Samuel Kacer <samuel.kacer@gmail.com>
 # https://github.com/SamKacer/HearthstoneCardLookup
 
-from typing import Optional
+from typing import Optional, Union
 import api
 import globalPluginHandler
 import re
@@ -27,54 +27,59 @@ class GlobalPlugin(globalPluginHandler.GlobalPlugin):
 
 
 def lookupCardInfo(cardName: str) -> None:
+	# in some webpages, namely top decks, all letters are capital, which is 404 in wiki
+	# Capitalize all words except for exceptions, but always capitalize the first
+	capitalized = " ".join(word.capitalize() if i == 0 or word.lower() not in LITTLE_WORDS else word.lower() for i, word in enumerate(cardName.split()))
+	
+	data = fetchInfo(capitalized)
+	if isinstance(data, HTTPError):
+		response = fetchInfo(cardName)
+	if isinstance(data, HTTPError):
+		return ui.message(f"Couldn't get card info for {cardName}: {data}")
+	set = matchImage("Set", data)
+	multiClass = matchLink("Multiclass", data)
+	class_ = matchImage("Class", data)
+	type = matchLink("Type", data)
+	school = matchLink("Spell school", data)
+	minionType = matchLink("Minion type", data)
+	rarity = matchImage("Rarity", data) or matchLink("Rarity", data)
+	cost = matchNumberBeforeImg("Cost", data)
+	attack = matchNumberBeforeImg("Attack", data)
+	health = matchNumberBeforeImg("Health", data)
+	durability = matchNumberBeforeImg("Durability", data)
+
+	match = re.search(r'(?sm)Flavor text</div>.*?<p><i>(.*?)</i>', data)
+	flavor = match.group(1) if match else None
+
+	match = re.search(r'(?sm)</table></div>(.*?)<div', data)
+	text = re.sub(r'(<b>)|(</b>)', "", match.group(1)) if match else None
+
+	ui.browseableMessage('<p>' + '</p>\n<p>'.join(
+		filter(
+			lambda f: f is not None,
+			(
+				cardName,
+				f"{cost} mana" if cost else None,
+				f"{attack} {health or durability}" if attack and (health or durability) else None,
+				text,
+				minionType,
+				school,
+				type,
+				multiClass or class_,
+				rarity,
+				set,
+				flavor,
+			)
+		)
+	) + '</p>', cardName, True)
+
+
+def fetchInfo(cardName: str) -> Union[str, HTTPError]:
 	url = 'https://hearthstone.fandom.com/wiki/' + quote(cardName)
 	try:
-		response = urlopen(url)
-		data = response.read().decode('utf-8')
-		set = matchImage("Set", data)
-		multiClass = matchLink("Multiclass", data)
-		class_ = matchImage("Class", data)
-		type = matchLink("Type", data)
-		school = matchLink("Spell school", data)
-		minionType = matchLink("Minion type", data)
-		rarity = matchImage("Rarity", data) or matchLink("Rarity", data)
-		cost = matchNumberBeforeImg("Cost", data)
-		attack = matchNumberBeforeImg("Attack", data)
-		health = matchNumberBeforeImg("Health", data)
-		durability = matchNumberBeforeImg("Durability", data)
-
-		match = re.search(r'(?sm)Flavor text</div>.*?<p><i>(.*?)</i>', data)
-		flavor = match.group(1) if match else None
-
-		match = re.search(r'(?sm)</table></div>(.*?)<div', data)
-		text = re.sub(r'(<b>)|(</b>)', "", match.group(1)) if match else None
-
-		ui.browseableMessage('<p>' + '</p>\n<p>'.join(
-			filter(
-				lambda f: f is not None,
-				(
-					cardName,
-					f"{cost} mana" if cost else None,
-					f"{attack} {health or durability}" if attack and (health or durability) else None,
-					text,
-					minionType,
-					school,
-					type,
-					multiClass or class_,
-					rarity,
-					set,
-					flavor,
-				)
-			)
-		) + '</p>', cardName, True)
+		return urlopen(url).read().decode('utf-8')	
 	except HTTPError as e:
-		if e.code == 404:
-			# in some webpages, namely top decks, all letters are capital, which is 404 in wiki
-			# Capitalize all words except for exceptions, but always capitalize the first
-			capitalized = " ".join(word.capitalize() if i == 0 or word.lower() not in LITTLE_WORDS else word.lower() for i, word in enumerate(cardName.split()))
-			if capitalized != cardName:
-				return lookupCardInfo(capitalized)
-		ui.message(f"Couldn't get card info for {cardName}: {e}")
+		return e
 
 LITTLE_WORDS = {'the', 'a', 'to', 'for', 'of', 'in'}
 
