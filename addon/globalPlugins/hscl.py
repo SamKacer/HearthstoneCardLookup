@@ -7,6 +7,7 @@
 from typing import Optional, Union
 import api
 import globalPluginHandler
+import gui
 import re
 from scriptHandler import script
 from threading import Thread
@@ -15,18 +16,38 @@ import ui
 from urllib.error import HTTPError
 from urllib.parse import quote
 from urllib.request import urlopen
+import wx
 
 class GlobalPlugin(globalPluginHandler.GlobalPlugin):
-	@script("Lookup Hearthstone card info.", gesture="kb:NVDA+H")
-	def script_lookup(self, gesture):
+	@script("Lookup Hearthstone card info for card name from selection or clipboard.", gesture="kb:NVDA+H")
+	def script_lookupFromSelectionOrClipboard(self, gesture):
 		selection = getSelectedText().strip()
 		if selection:
-			if   "’" in selection:
-				selection = selection.replace("’", "'")
 			Thread(target=lookupCardInfo, args=(selection, )).start()
 
 
+	@script("Lookup Hearthstone card info for card name from user input.", gesture="kb:NVDA+shift+H")
+	def script_lookupFromInput(self, gesture):
+		d = wx.TextEntryDialog(
+			gui.mainFrame,
+			"Please enter card name to lookup",
+			"Lookup Hearthstone card",
+			style=wx.OK|wx.CANCEL
+		)
+		def callback(result):
+			if result == wx.ID_OK:
+				text = d.GetValue().strip()
+				if text:
+					Thread(target=lookupCardInfo, args=(text, )).start()
+		#end def
+		gui.runScriptModalDialog(d, callback)
+
 def lookupCardInfo(cardName: str) -> None:
+	ui.message("fetching card info")
+	
+	if   "’" in cardName:
+		cardName = cardName.replace("’", "'")
+	
 	# in some webpages, namely top decks, all letters are capital, which is 404 in wiki
 	# Capitalize all words except for exceptions, but always capitalize the first
 	capitalized = " ".join(word.capitalize() if i == 0 or word.lower() not in LITTLE_WORDS else word.lower() for i, word in enumerate(cardName.split()))
