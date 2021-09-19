@@ -2,11 +2,13 @@
 
 This is an NVDA addon that lets users quickly lookup info for a specific Hearthstone card by its name.
 
-- [download stable version](https://github.com/SamKacer/HearthstoneCardLookup/releases/download/v0.4/HearthstoneCardLookup-0.4.nvda-addon)
+- [download stable version](https://github.com/SamKacer/HearthstoneCardLookup/releases/download/v0.5/HearthstoneCardLookup-0.5.nvda-addon)
 
 ## Usage
 
 Either select the text of a card name or have it copied to your clipboard, then press NVDA + H, which will try to find the card info and display it in a pop-up browseable window.
+
+Alternatively, you can press NVDA + shift + H, which will bring up a dialogue where you can type in the name of a card to look up.
 
 ### Example output
 
@@ -23,6 +25,10 @@ If you haven't heard the Tirion Fordring theme song, it's because it doesn't exi
 ``` 	
 
 ## Changelog
+
+### v0.5
+- fetching card info is faster in some cases
+- added new command for looking up card info from user input (NVDA + shift + H)
 
 ### v0.4
 - display multiclass if available for card
