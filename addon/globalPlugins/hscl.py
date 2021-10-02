@@ -47,14 +47,19 @@ def lookupCardInfo(cardName: str) -> None:
 	
 	if   "’" in cardName:
 		cardName = cardName.replace("’", "'")
-	
+
 	# in some webpages, namely top decks, all letters are capital, which is 404 in wiki
 	# Capitalize all words except for exceptions, but always capitalize the first
 	capitalized = " ".join(word.capitalize() if i == 0 or word.lower() not in LITTLE_WORDS else word.lower() for i, word in enumerate(cardName.split()))
+
+	# kind of a hack, might want to make this more robust so it would automatically take care of other cases
+	bad_rank_spelling = '(rank'
+	if bad_rank_spelling in capitalized:
+		capitalized = capitalized.replace(bad_rank_spelling, '(Rank')
 	
 	data = fetchInfo(capitalized)
-	if isinstance(data, HTTPError):
-		response = fetchInfo(cardName)
+	if isinstance(data, HTTPError) and capitalized != cardName:
+		data = fetchInfo(cardName)
 	if isinstance(data, HTTPError):
 		return ui.message(f"Couldn't get card info for {cardName}: {data}")
 	set = matchImage("Set", data)
