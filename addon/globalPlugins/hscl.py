@@ -56,6 +56,9 @@ def lookupCardInfo(cardName: str) -> None:
 	bad_rank_spelling = '(rank'
 	if bad_rank_spelling in capitalized:
 		capitalized = capitalized.replace(bad_rank_spelling, '(Rank')
+	bad_si7_spelling = 'Si:7'
+	if bad_si7_spelling in capitalized:
+		capitalized = capitalized.replace(bad_si7_spelling, 'SI:7')
 	
 	data = fetchInfo(capitalized)
 	if isinstance(data, HTTPError) and capitalized != cardName:
