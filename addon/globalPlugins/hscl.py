@@ -19,6 +19,9 @@ from urllib.request import urlopen
 import wx
 
 class GlobalPlugin(globalPluginHandler.GlobalPlugin):
+	def __init__(self) -> None:
+		super().__init__()
+		self.dialogue = None
 	@script("Lookup Hearthstone card info for card name from selection or clipboard.", gesture="kb:NVDA+H")
 	def script_lookupFromSelectionOrClipboard(self, gesture):
 		selection = getSelectedText().strip()
@@ -28,7 +31,13 @@ class GlobalPlugin(globalPluginHandler.GlobalPlugin):
 
 	@script("Lookup Hearthstone card info for card name from user input.", gesture="kb:NVDA+shift+H")
 	def script_lookupFromInput(self, gesture):
-		d = wx.TextEntryDialog(
+		if self.dialogue:
+			if self.dialogue.IsActive():
+				ui.message("Dialogue already open")
+				return
+			else:
+				self.dialogue.Close()
+		self.dialogue = wx.TextEntryDialog(
 			gui.mainFrame,
 			"Please enter card name to lookup",
 			"Lookup Hearthstone card",
@@ -36,11 +45,12 @@ class GlobalPlugin(globalPluginHandler.GlobalPlugin):
 		)
 		def callback(result):
 			if result == wx.ID_OK:
-				text = d.GetValue().strip()
+				text = self.dialogue.GetValue().strip()
 				if text:
 					Thread(target=lookupCardInfo, args=(text, )).start()
+			self.dialogue = None
 		#end def
-		gui.runScriptModalDialog(d, callback)
+		gui.runScriptModalDialog(self.dialogue, callback)
 
 def lookupCardInfo(cardName: str) -> None:
 	ui.message("fetching card info")
