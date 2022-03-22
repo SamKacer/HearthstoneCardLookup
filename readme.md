@@ -28,6 +28,7 @@ If you haven't heard the Tirion Fordring theme song, it's because it doesn't exi
 
 ### v0.7
 - opening a card lookup dialog will only allow one such dialog to exist
+- compatible with NVDA version 2022.1
 
 ### v0.6
 - fix some cards not being fetched like Whack-A-Gnoll Hammer and Flurry (Rank 1)
