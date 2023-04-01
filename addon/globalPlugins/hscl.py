@@ -75,22 +75,25 @@ def lookupCardInfo(cardName: str) -> None:
 		data = fetchInfo(cardName)
 	if isinstance(data, HTTPError):
 		return ui.message(f"Couldn't get card info for {cardName}: {data}")
-	set = matchImage("Set", data)
+	set = matchLink("Card set", data)
 	multiClass = matchLink("Multiclass", data)
-	class_ = matchImage("Class", data)
-	type = matchLink("Type", data)
+	class_ = matchLink("Class", data)
+	type = matchLink("Card type", data)
 	school = matchLink("Spell school", data)
-	minionType = matchLink("Minion type", data)
-	rarity = matchImage("Rarity", data) or matchLink("Rarity", data)
+	minionType = matchLink("Minion types", data)
+	rarity = matchLink("Rarity", data)
+	if(rarity == "Rarity"):
+		rarity = "Free"
+	runes = str(matchNumberBeforeLink("Runes", data) or '') + ' ' + str(matchLink("Runes", data) or '')
 	cost = matchNumberBeforeImg("Cost", data)
 	attack = matchNumberBeforeImg("Attack", data)
 	health = matchNumberBeforeImg("Health", data)
 	durability = matchNumberBeforeImg("Durability", data)
 
-	match = re.search(r'(?sm)Flavor text</div>.*?<p><i>(.*?)</i>', data)
+	match = re.search(r'(?sm)<div class="pi-item pi-data pi-item-spacing pi-border-color" data-source="flavor">.*?<center>(.*?)</center>', data)
 	flavor = match.group(1) if match else None
 
-	match = re.search(r'(?sm)</table></div>(.*?)<div', data)
+	match = re.search(r'(?sm)<div class="pi-item pi-data pi-item-spacing pi-border-color" data-source="text">.*?<center>(.*?)</center>', data)
 	text = re.sub(r'(<b>)|(</b>)', "", match.group(1)) if match else None
 
 	ui.browseableMessage('<p>' + '</p>\n<p>'.join(
@@ -99,6 +102,7 @@ def lookupCardInfo(cardName: str) -> None:
 			(
 				cardName,
 				f"{cost} mana" if cost else None,
+				runes,
 				f"{attack} {health or durability}" if attack and (health or durability) else None,
 				text,
 				minionType,
@@ -123,25 +127,40 @@ def fetchInfo(cardName: str) -> Union[str, HTTPError]:
 LITTLE_WORDS = {'the', 'a', 'to', 'for', 'of', 'in'}
 
 def th_re(label: str) -> str:
-	return r'<th>' + label + ':' + '</th>'
+	return r'<h3 class="pi-data-label pi-secondary-font">' + label + ':</h3>'
 
-def matchImage(label: str, string: str) -> Optional[str]:
-	row = matchRow(label, string)
-	m = re.search(th_re(label) + r'.*?<td>.*?alt="(.*?)".*?</td>', row) if row else None
-	return m.group(1).strip() if m else None
+#def matchImage(label: str, string: str) -> Optional[str]:
+	#row = matchRow(label, string)
+	#m = re.search(th_re(label) + r'.*?<td>.*?alt="(.*?)".*?</td>', row) if row else None
+	#return m.group(1).strip() if m else None
 
 def matchLink(label: str, string: str) -> Optional[str]:
 	row = matchRow(label, string)
-	m = re.search(th_re(label) + r'.*?<td>.*?<a.*?>(.*?)</a>', row) if row else None
+	m = re.search(r'(?sm)' + th_re(label) + r'.*?<div .*?<a.*? title="(.*?)">', row) if row else None
+	text = m.group(1).strip() if m else None
+	if(text):
+		text2 = matchSecondLink(label, string)
+		if(text2):
+			text = text + ' ' + text2
+	return text if text else None
+
+def matchSecondLink(label: str, string: str) -> Optional[str]:
+	row = matchRow(label, string)
+	m = re.search(r'(?sm)' + th_re(label) + r'.*?<div .*?><a .*?</a><br><a .*?title="(.*?)">', row) if row else None
 	return m.group(1).strip() if m else None
 
 def matchNumberBeforeImg(label: str, string: str) -> Optional[str]:
 	row = matchRow(label, string)
-	m = re.search(th_re(label) + r'.*?<td>(.*?)<img', row) if row else None
+	m = re.search(r'(?sm)' + th_re(label) + r'.*?<div.*?>(.*?)<img', row) if row else None
+	return m.group(1).strip() if m else None
+
+def matchNumberBeforeLink(label: str, string: str) -> Optional[str]:
+	row = matchRow(label, string)
+	m = re.search(r'(?sm)' + th_re(label) + r'.*?<div.*?>(.*?)<a', row) if row else None
 	return m.group(1).strip() if m else None
 
 def matchRow(label:str, string: str) -> Optional[str]:
-	match = re.search(th_re(label) + r'.*?</tr>', string)
+	match = re.search(r'(?sm)' + th_re(label) + r'.*?<div .*?</div>', string)
 	return match.group() if match else None
 
 # adapted from Quick Dictionary by Oleksandr Gryshchenko <grisov.nvaccess@mailnull.com>
