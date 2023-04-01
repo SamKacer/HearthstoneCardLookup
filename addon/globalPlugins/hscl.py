@@ -126,41 +126,35 @@ def fetchInfo(cardName: str) -> Union[str, HTTPError]:
 
 LITTLE_WORDS = {'the', 'a', 'to', 'for', 'of', 'in'}
 
-def th_re(label: str) -> str:
+def h3_re(label: str) -> str:
 	return r'<h3 class="pi-data-label pi-secondary-font">' + label + ':</h3>'
-
-#def matchImage(label: str, string: str) -> Optional[str]:
-	#row = matchRow(label, string)
-	#m = re.search(th_re(label) + r'.*?<td>.*?alt="(.*?)".*?</td>', row) if row else None
-	#return m.group(1).strip() if m else None
 
 def matchLink(label: str, string: str) -> Optional[str]:
 	row = matchRow(label, string)
-	m = re.search(r'(?sm)' + th_re(label) + r'.*?<div .*?<a.*? title="(.*?)">', row) if row else None
+	m = re.search(r'(?sm)' + h3_re(label) + r'.*?<div .*?<a.*? title="(.*?)">', row) if row else None
 	text = m.group(1).strip() if m else None
 	if(text):
-		text2 = matchSecondLink(label, string)
+		text2 = matchSecondLink(label, row) if row else None
 		if(text2):
 			text = text + ' ' + text2
 	return text if text else None
 
-def matchSecondLink(label: str, string: str) -> Optional[str]:
-	row = matchRow(label, string)
-	m = re.search(r'(?sm)' + th_re(label) + r'.*?<div .*?><a .*?</a><br><a .*?title="(.*?)">', row) if row else None
+def matchSecondLink(label: str, row: str) -> Optional[str]:
+	m = re.search(r'(?sm)' + h3_re(label) + r'.*?<div .*?><a .*?</a><br><a .*?title="(.*?)">', row) if row else None
 	return m.group(1).strip() if m else None
 
 def matchNumberBeforeImg(label: str, string: str) -> Optional[str]:
 	row = matchRow(label, string)
-	m = re.search(r'(?sm)' + th_re(label) + r'.*?<div.*?>(.*?)<img', row) if row else None
+	m = re.search(r'(?sm)' + h3_re(label) + r'.*?<div.*?>(.*?)<img', row) if row else None
 	return m.group(1).strip() if m else None
 
 def matchNumberBeforeLink(label: str, string: str) -> Optional[str]:
 	row = matchRow(label, string)
-	m = re.search(r'(?sm)' + th_re(label) + r'.*?<div.*?>(.*?)<a', row) if row else None
+	m = re.search(r'(?sm)' + h3_re(label) + r'.*?<div.*?>(.*?)<a', row) if row else None
 	return m.group(1).strip() if m else None
 
 def matchRow(label:str, string: str) -> Optional[str]:
-	match = re.search(r'(?sm)' + th_re(label) + r'.*?<div .*?</div>', string)
+	match = re.search(r'(?sm)' + h3_re(label) + r'.*?<div .*?</div>', string)
 	return match.group() if match else None
 
 # adapted from Quick Dictionary by Oleksandr Gryshchenko <grisov.nvaccess@mailnull.com>
