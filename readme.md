@@ -2,7 +2,7 @@
 
 This is an NVDA addon that lets users quickly lookup info for a specific Hearthstone card by its name.
 
-- [download stable version](https://github.com/SamKacer/HearthstoneCardLookup/releases/download/v0.7/HearthstoneCardLookup-0.7.nvda-addon)
+- [download stable version](https://github.com/SamKacer/HearthstoneCardLookup/releases/download/v0.8/HearthstoneCardLookup-0.8.nvda-addon)
 
 ## Usage
 
@@ -25,6 +25,11 @@ If you haven't heard the Tirion Fordring theme song, it's because it doesn't exi
 ``` 	
 
 ## Changelog
+
+### v0.8
+- updated to work with NVDA 2023
+- fixed addon not working anymore after Hearthstone fandom wiki changed its layout
+- fixed minion types and multi class not showing
 
 ### v0.7
 - opening a card lookup dialog will only allow one such dialog to exist
