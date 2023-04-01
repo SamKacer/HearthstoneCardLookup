@@ -76,6 +76,7 @@ def lookupCardInfo(cardName: str) -> None:
 	if isinstance(data, HTTPError):
 		return ui.message(f"Couldn't get card info for {cardName}: {data}")
 	set = matchLink("Card set", data)
+	# todo: fix multi class not working
 	multiClass = matchLink("Multiclass", data)
 	class_ = matchLink("Class", data)
 	type = matchLink("Card type", data)
