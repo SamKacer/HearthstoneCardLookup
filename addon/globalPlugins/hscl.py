@@ -87,7 +87,11 @@ def lookupCardInfo(cardName: str) -> None:
 	rarity = matchLink("Rarity", data)
 	if(rarity == "Rarity"):
 		rarity = "Free"
-	runes = str(matchNumberBeforeLink("Runes", data) or '') + ' ' + str(matchLink("Runes", data) or '')
+	runeHtml = matchRow("Runes", data)
+	runes = ', '.join(
+		str(matchNumberBeforeLinkDirectly(runeData) or '') + ' ' + str(matchLinkDirectly(runeData) or '')
+		for runeData in runeHtml.split('<br>')
+	) if runeHtml else None
 	cost = matchNumberBeforeImg("Cost", data)
 	attack = matchNumberBeforeImg("Attack", data)
 	health = matchNumberBeforeImg("Health", data)
@@ -134,13 +138,16 @@ def h3_re(label: str) -> str:
 
 def matchLink(label: str, string: str) -> Optional[str]:
 	row = matchRow(label, string)
-	m = re.search(r'(?sm)<a.*? title="(.*?)">', row) if row else None
-	text = m.group(1).strip() if m else None
+	text = matchLinkDirectly(row)
 	if(text):
 		text2 = matchSecondLink(label, row) if row else None
 		if(text2):
 			text = text + ' ' + text2
 	return text if text else None
+
+def matchLinkDirectly(row: Optional[str]) -> Optional[str]:
+	m = re.search(r'(?sm)<a.*? title="(.*?)">', row) if row else None
+	return m.group(1).strip() if m else None
 
 def matchSecondLink(label: str, row: str) -> Optional[str]:
 	m = re.search(r'(?sm)<a .*?</a><br><a .*?title="(.*?)">', row) if row else None
@@ -153,6 +160,9 @@ def matchNumberBeforeImg(label: str, string: str) -> Optional[str]:
 
 def matchNumberBeforeLink(label: str, string: str) -> Optional[str]:
 	row = matchRow(label, string)
+	return matchNumberBeforeLinkDirectly(row) if row else None
+
+def matchNumberBeforeLinkDirectly(row: Optional[str]) -> Optional[str]:
 	m = re.search(r'(?sm)(.*?)<a', row) if row else None
 	return m.group(1).strip() if m else None
 
