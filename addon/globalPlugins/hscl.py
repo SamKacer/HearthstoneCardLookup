@@ -80,7 +80,10 @@ def lookupCardInfo(cardName: str) -> None:
 	class_ = matchLink("Class", data)
 	type = matchLink("Card type", data)
 	school = matchLink("Spell school", data)
-	minionType = matchLink("Minion types", data)
+	minionType = (
+		matchLink("Minion type", data)
+		or matchLink("Minion types", data)
+		)
 	rarity = matchLink("Rarity", data)
 	if(rarity == "Rarity"):
 		rarity = "Free"
