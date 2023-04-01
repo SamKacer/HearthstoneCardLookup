@@ -76,8 +76,7 @@ def lookupCardInfo(cardName: str) -> None:
 	if isinstance(data, HTTPError):
 		return ui.message(f"Couldn't get card info for {cardName}: {data}")
 	set = matchLink("Card set", data)
-	# todo: fix multi class not working
-	multiClass = matchLink("Multiclass", data)
+	multiClass = matchPlainText("Multi-class", data)
 	class_ = matchLink("Class", data)
 	type = matchLink("Card type", data)
 	school = matchLink("Spell school", data)
@@ -155,6 +154,11 @@ def matchNumberBeforeImg(label: str, string: str) -> Optional[str]:
 def matchNumberBeforeLink(label: str, string: str) -> Optional[str]:
 	row = matchRow(label, string)
 	m = re.search(r'(?sm)' + h3_re(label) + r'.*?<div.*?>(.*?)<a', row) if row else None
+	return m.group(1).strip() if m else None
+
+def matchPlainText(label: str, string: str) -> Optional[str]:
+	row = matchRow(label, string)
+	m = re.search(r'(?sm)' + h3_re(label) + r'.*?<div.*?>(.*?)</div', row) if row else None
 	return m.group(1).strip() if m else None
 
 def matchRow(label:str, string: str) -> Optional[str]:
