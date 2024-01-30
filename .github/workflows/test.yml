@@ -1,0 +1,11 @@
+name: context test
+on: push
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+    - name: check what an object looks like
+      run: |
+        echo $GH
+      env:
+        GH: ${{ github }}
