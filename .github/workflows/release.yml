@@ -6,6 +6,22 @@ jobs:
     steps:
       - name: post issue 
         run: |
+          # get the dowlnload url of the uploaded asset
+          # check ther is only one .nvda-addon asset
+          export ASSETS
+          DL_URL=$(cat << EOF | python3
+          import os
+          import json
+          assets = json.reads(os.environ['ASSETS'])
+          results = []
+          for asset in assets:
+            if asset['content_type'] == 'application/nvda-addon':
+              results.append(asset)
+          if(len(results) != 1):
+            raise Exception("Expected there to be 1 .nvda-addon asset, but instead there was/were " + len(assets))
+          print(results[0]['browser_download_url'])
+          EOF
+          )
           cat << EOF |
           ### Download URL
 
@@ -34,6 +50,6 @@ jobs:
           gh issue create NVAccess/NVDA --title "[Submit add-on]: IntelliJ Improved $RELEASE_VERSION" --tag todo -
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          DL_URL: ${{ github.event.release.assets }}
+          ASSETS: ${{ toJson(github.event.release.assets) }}
           SOURCE_URL: https://github.com/${{ github.repository }}
           RELEASE_VERSION: ${{ github.event.release.name }}
