@@ -6,4 +6,4 @@ jobs:
     steps:
       - run: echo $GH
         env:
-          GH: ${{ github }}
+          GH: gh #${{ github }}
