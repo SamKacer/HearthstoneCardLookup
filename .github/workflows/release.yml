@@ -1,0 +1,39 @@
+name: publish release to NVDA aAddon store
+on: release
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    steps:
+      - name: post issue 
+        run: |
+          cat << EOF |
+          ### Download URL
+
+          $DL_URL
+
+          ### Source URL
+
+          $SOURCE_URL
+
+          ### Publisher
+
+          Samuel Kacer
+
+          ### Channel
+
+          stable
+
+          ### License Name
+
+          GPL v2
+
+          ### License URL
+
+          https://www.gnu.org/licenses/gpl-2.0.html
+          EOF
+          gh issue create NVAccess/NVDA --title "[Submit add-on]: IntelliJ Improved $RELEASE_VERSION" --tag todo -
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          DL_URL: ${{ github.event.release.assets }}
+          SOURCE_URL: https://github.com/${{ github.repository }}
+          RELEASE_VERSION: ${{ github.event.release.name }}
