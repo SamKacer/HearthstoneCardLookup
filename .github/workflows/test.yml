@@ -4,6 +4,6 @@ jobs:
   test:
     runs-on: ubuntu-latest
     steps:
-      - run: echo $GH
+      - run: echo output is here = $GH
         env:
-          GH: gh #${{ github }}
+          GH: ${{ toJson(github ) }}
