@@ -29,6 +29,7 @@ jobs:
           ADDON_NAME=$(cat << EOF | python3
           import buildVars
           print(buildVars.addon_info['addon_summary'])
+          EOF
           )
           cat << EOF |
           ### Download URL
