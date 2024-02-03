@@ -3,6 +3,9 @@ on:
   release:
     types:
       - published
+permissions:
+  contents: read
+  issues: write
 jobs:
   publish:
     runs-on: ubuntu-latest
