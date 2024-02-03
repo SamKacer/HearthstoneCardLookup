@@ -1,8 +1,8 @@
 name: publish release to NVDA aAddon store
-on:
-  release:
-    types:
-      - published
+on: push
+  # release:
+    # types:
+      # - published
 permissions:
   contents: read
   issues: write
@@ -13,56 +13,9 @@ jobs:
       - uses: actions/checkout@v4
       - name: post issue 
         run: |
-          # get the dowlnload url of the uploaded asset
-          # check ther is only one .nvda-addon asset
-          export ASSETS
-          DL_URL=$(cat << EOF | python3
-          import os
-          import json
-          assets = json.loads(os.environ['ASSETS'])
-          results = []
-          for asset in assets:
-            if asset['content_type'] == 'application/x-nvda-addon':
-              results.append(asset)
-          if(len(results) != 1):
-            raise Exception("Expected there to be 1 .nvda-addon asset, but instead there was/were " + len(assets))
-          print(results[0]['browser_download_url'])
-          EOF
-          )
-          # get addon name from buildVars
-          ADDON_NAME=$(cat << EOF | python3
-          import buildVars
-          print(buildVars.addon_info['addon_summary'])
-          EOF
-          )
-          cat << EOF |
-          ### Download URL
-
-          $DL_URL
-
-          ### Source URL
-
-          $SOURCE_URL
-
-          ### Publisher
-
-          Samuel Kacer
-
-          ### Channel
-
-          stable
-
-          ### License Name
-
-          GPL v2
-
-          ### License URL
-
-          https://www.gnu.org/licenses/gpl-2.0.html
-          EOF
-          gh issue create --repo nvaccess/addon-datastore --title "[Submit add-on]: $ADDON_NAME $RELEASE_VERSION" --label autoSubmissionFromIssue --body-file -
+          gh issue create --title hello2 --body "another hellow world"
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          ASSETS: ${{ toJson(github.event.release.assets) }}
-          SOURCE_URL: https://github.com/${{ github.repository }}
-          RELEASE_VERSION: ${{ github.event.release.name }}
+          # ASSETS: ${{ toJson(github.event.release.assets) }}
+          # SOURCE_URL: https://github.com/${{ github.reposit/ory }}
+          # RELEASE_VERSION: ${{ github.event.release.name }}
