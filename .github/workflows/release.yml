@@ -55,7 +55,7 @@ jobs:
 
           https://www.gnu.org/licenses/gpl-2.0.html
           EOF
-          gh issue create NVAccess/NVDA --title "[Submit add-on]: $ADDON_NAME $RELEASE_VERSION" --tag todo -
+          gh issue create nvaccess/addon-datastore --title "[Submit add-on]: $ADDON_NAME $RELEASE_VERSION" --tag autoSubmissionFromIssue -
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           ASSETS: ${{ toJson(github.event.release.assets) }}
