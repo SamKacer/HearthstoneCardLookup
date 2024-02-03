@@ -15,10 +15,10 @@ jobs:
           DL_URL=$(cat << EOF | python3
           import os
           import json
-          assets = json.reads(os.environ['ASSETS'])
+          assets = json.loads(os.environ['ASSETS'])
           results = []
           for asset in assets:
-            if asset['content_type'] == 'application/nvda-addon':
+            if asset['content_type'] == 'application/x-nvda-addon':
               results.append(asset)
           if(len(results) != 1):
             raise Exception("Expected there to be 1 .nvda-addon asset, but instead there was/were " + len(assets))
