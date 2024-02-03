@@ -15,7 +15,7 @@ jobs:
         run: |
           gh issue create --repo nvaccess/addon-datastore --title "Testing" --body "Testing creating an issue"
         env:
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GH_TOKEN: ${{ secrets.GH_TOKEN }}
           # ASSETS: ${{ toJson(github.event.release.assets) }}
           # SOURCE_URL: https://github.com/${{ github.reposit/ory }}
           # RELEASE_VERSION: ${{ github.event.release.name }}
