@@ -1,5 +1,8 @@
 name: publish release to NVDA aAddon store
-on: release
+on:
+  release:
+    types:
+      - published
 jobs:
   publish:
     runs-on: ubuntu-latest
