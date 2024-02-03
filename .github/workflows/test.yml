@@ -1,9 +1,0 @@
-name: context test
-on: push
-jobs:
-  test:
-    runs-on: ubuntu-latest
-    steps:
-      - run: echo output is here = $GH
-        env:
-          GH: ${{ toJson(github ) }}
