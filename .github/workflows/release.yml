@@ -7,6 +7,7 @@ jobs:
   publish:
     runs-on: ubuntu-latest
     steps:
+      - uses: actions/checkout@v4
       - name: post issue 
         run: |
           # get the dowlnload url of the uploaded asset
