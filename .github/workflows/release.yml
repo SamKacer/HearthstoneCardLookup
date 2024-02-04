@@ -35,6 +35,7 @@ jobs:
           print(buildVars.addon_info['addon_summary'])
           EOF
           )
+          # construct and pipe issue body to gh issue create command
           cat << EOF |
           ### Download URL
 
