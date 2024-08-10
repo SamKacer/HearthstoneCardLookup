@@ -15,7 +15,7 @@ from textInfos import POSITION_SELECTION
 import ui
 from urllib.error import HTTPError
 from urllib.parse import quote
-from urllib.request import urlopen
+from urllib.request import urlopen, Request
 import wx
 
 class GlobalPlugin(globalPluginHandler.GlobalPlugin):
@@ -125,9 +125,12 @@ def lookupCardInfo(cardName: str) -> None:
 
 
 def fetchInfo(cardName: str) -> Union[str, HTTPError]:
-	url = 'https://hearthstone.fandom.com/wiki/' + quote(cardName)
+	request = Request(
+		url='https://hearthstone.wiki.gg/wiki/' + quote(cardName),
+		    headers={'User-Agent': 'Mozilla/5.0'}
+	)
 	try:
-		return urlopen(url).read().decode('utf-8')	
+		return urlopen(request).read().decode('utf-8')	
 	except HTTPError as e:
 		return e
 
