@@ -10,7 +10,6 @@ import globalPluginHandler
 import gui
 import re
 from scriptHandler import script
-from threading import Thread
 from textInfos import POSITION_SELECTION
 import ui
 from urllib.error import HTTPError
@@ -26,7 +25,7 @@ class GlobalPlugin(globalPluginHandler.GlobalPlugin):
 	def script_lookupFromSelectionOrClipboard(self, gesture):
 		selection = getSelectedText().strip()
 		if selection:
-			Thread(target=lookupCardInfo, args=(selection, )).start()
+			lookupCardInfo(selection)
 
 
 	@script("Lookup Hearthstone card info for card name from user input.", gesture="kb:NVDA+shift+H")
@@ -47,7 +46,7 @@ class GlobalPlugin(globalPluginHandler.GlobalPlugin):
 			if result == wx.ID_OK:
 				text = self.dialogue.GetValue().strip()
 				if text:
-					Thread(target=lookupCardInfo, args=(text, )).start()
+					lookupCardInfo(text)
 			self.dialogue = None
 		#end def
 		gui.runScriptModalDialog(self.dialogue, callback)
