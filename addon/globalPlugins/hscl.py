@@ -89,7 +89,7 @@ def lookupCardInfo(cardName: str) -> None:
 	runeHtml = matchRow("Runes", data)
 	runes = ', '.join(
 		str(matchNumberBeforeLinkDirectly(runeData) or '') + ' ' + str(matchLinkDirectly(runeData) or '')
-		for runeData in runeHtml.split('<br>')
+		for runeData in runeHtml.split('<br />')
 	) if runeHtml else None
 	cost = matchNumberBeforeImg("Cost", data)
 	attack = matchNumberBeforeImg("Attack", data)
