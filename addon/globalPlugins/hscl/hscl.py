@@ -4,7 +4,7 @@
 # author: Samuel Kacer <samuel.kacer@gmail.com>
 # https://github.com/SamKacer/HearthstoneCardLookup
 
-from typing import Optional, Union
+from typing import Optional, Union, Iterable
 import api
 import globalPluginHandler
 import gui
@@ -53,7 +53,12 @@ class GlobalPlugin(globalPluginHandler.GlobalPlugin):
 
 def lookupCardInfo(cardName: str) -> None:
 	ui.message("fetching card info")
-	
+	cardFields = getCardFieldsIterator(cardName)
+	if cardFields != None:
+		ui.browseableMessage('<p>' + '</p>\n<p>'.join(cardFields) + '</p>', cardName, True)
+
+
+def getCardFieldsIterator(cardName: str) -> Optional[Iterable[str]]:
 	if   "’" in cardName:
 		cardName = cardName.replace("’", "'")
 
@@ -102,25 +107,23 @@ def lookupCardInfo(cardName: str) -> None:
 	match = re.search(r'(?sm)<div class="pi-item pi-data pi-item-spacing pi-border-color" data-source="text">.*?<center>(.*?)</center>', data)
 	text = re.sub(r'(<b>)|(</b>)', "", match.group(1)) if match else None
 
-	ui.browseableMessage('<p>' + '</p>\n<p>'.join(
-		filter(
-			lambda f: f is not None,
-			(
-				cardName,
-				f"{cost} mana" if cost else None,
-				runes,
-				f"{attack} {health or durability}" if attack and (health or durability) else None,
-				text,
-				minionType,
-				school,
-				type,
-				multiClass or class_,
-				rarity,
-				set,
-				flavor,
-			)
+	return filter(
+		lambda f: f is not None,
+		(
+			cardName,
+			f"{cost} mana" if cost else None,
+			runes,
+			f"{attack} {health or durability}" if attack and (health or durability) else None,
+			text,
+			minionType,
+			school,
+			type,
+			multiClass or class_,
+			rarity,
+			set,
+			flavor,
 		)
-	) + '</p>', cardName, True)
+	)
 
 
 def fetchCardHtmlFromWiki(cardName: str) -> Union[str, HTTPError]:
