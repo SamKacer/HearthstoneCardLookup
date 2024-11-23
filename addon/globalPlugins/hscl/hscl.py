@@ -69,9 +69,9 @@ def lookupCardInfo(cardName: str) -> None:
 	if bad_si7_spelling in capitalized:
 		capitalized = capitalized.replace(bad_si7_spelling, 'SI:7')
 	
-	data = fetchInfo(capitalized)
+	data = fetchCardHtmlFromWiki(capitalized)
 	if isinstance(data, HTTPError) and capitalized != cardName:
-		data = fetchInfo(cardName)
+		data = fetchCardHtmlFromWiki(cardName)
 	if isinstance(data, HTTPError):
 		return ui.message(f"Couldn't get card info for {cardName}: {data}")
 	set = matchLink("Card set", data)
@@ -123,7 +123,7 @@ def lookupCardInfo(cardName: str) -> None:
 	) + '</p>', cardName, True)
 
 
-def fetchInfo(cardName: str) -> Union[str, HTTPError]:
+def fetchCardHtmlFromWiki(cardName: str) -> Union[str, HTTPError]:
 	request = Request(
 		url='https://hearthstone.wiki.gg/wiki/' + quote(cardName),
 		    headers={'User-Agent': 'Mozilla/5.0'}
