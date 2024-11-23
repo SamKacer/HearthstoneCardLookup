@@ -53,12 +53,15 @@ class GlobalPlugin(globalPluginHandler.GlobalPlugin):
 
 def lookupCardInfo(cardName: str) -> None:
 	ui.message("fetching card info")
-	cardFields = getCardFieldsIterator(cardName)
-	if cardFields != None:
-		ui.browseableMessage('<p>' + '</p>\n<p>'.join(cardFields) + '</p>', cardName, True)
+	cardFieldsResult = getCardFieldsIterator(cardName)
+	if isinstance(cardFieldsResult, str):
+		# an error occured in fetching card fields
+		ui.browseableMessage(cardFieldsResult)
+	else:
+		ui.browseableMessage('<p>' + '</p>\n<p>'.join(cardFieldsResult) + '</p>', cardName, True)
 
 
-def getCardFieldsIterator(cardName: str) -> Optional[Iterable[str]]:
+def getCardFieldsIterator(cardName: str) -> Union[Iterable[str], str]:
 	if   "’" in cardName:
 		cardName = cardName.replace("’", "'")
 
@@ -78,7 +81,7 @@ def getCardFieldsIterator(cardName: str) -> Optional[Iterable[str]]:
 	if isinstance(data, HTTPError) and capitalized != cardName:
 		data = fetchCardHtmlFromWiki(cardName)
 	if isinstance(data, HTTPError):
-		return ui.message(f"Couldn't get card info for {cardName}: {data}")
+		return f"Couldn't get card info for {cardName}: {data}"
 	set = matchLink("Card set", data)
 	multiClass = matchPlainText("Multi-class", data)
 	class_ = matchLink("Class", data)
