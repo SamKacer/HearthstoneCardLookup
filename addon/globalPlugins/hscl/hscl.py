@@ -4,18 +4,13 @@
 # author: Samuel Kacer <samuel.kacer@gmail.com>
 # https://github.com/SamKacer/HearthstoneCardLookup
 
-from typing import Optional, Union, Iterable
 import api
 from .fetch import getCardFieldsIterator
 import globalPluginHandler
 import gui
-import re
 from scriptHandler import script
 from textInfos import POSITION_SELECTION
 import ui
-from urllib.error import HTTPError
-from urllib.parse import quote
-from urllib.request import urlopen, Request
 import wx
 
 class GlobalPlugin(globalPluginHandler.GlobalPlugin):
