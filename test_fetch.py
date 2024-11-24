@@ -31,6 +31,18 @@ Legacy
 def test_fireball():
 	checkCardText('fireball', fireballText)
 
+fieryWarAxeText = """Fiery War Axe
+2 mana
+3 2
+Weapon
+Warrior
+Free
+Legacy
+<i>During times of tranquility and harmony, this weapon was called by its less popular name, Chilly Peace Axe.</i>"""
+
+def test_weapon():
+	checkCardText('fiery war axe', fieryWarAxeText)
+
 def checkCardText(cardName: str, expectedCardText: str) -> None:
 	cardTextResult = fetch.getCardFieldsIterator(cardName)
 	if isinstance(cardTextResult, str):
