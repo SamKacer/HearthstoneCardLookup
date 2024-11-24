@@ -10,14 +10,18 @@ Minion
 Neutral
 Rare
 Legacy
-<i>There is no beast more frightening (or ridiculous) than a fully enraged chicken.</i>""".split('\n')
+<i>There is no beast more frightening (or ridiculous) than a fully enraged chicken.</i>"""
 
 def test_fetchMinion():
-	cardTextResult = fetch.getCardFieldsIterator('angry chicken')
+	checkCardText('angry chicken' , angryChickenTextLines)
+
+def checkCardText(cardName: str, expectedCardText: str) -> None:
+	cardTextResult = fetch.getCardFieldsIterator(cardName)
 	if isinstance(cardTextResult, str):
 		raise Exception(f"Failed to fetch card text: {cardTextResult}")
 	else:
-		cardTextLines = list(cardTextResult)
-		if cardTextLines != angryChickenTextLines:
-			diff = '\n'.join(ndiff(angryChickenTextLines, cardTextLines))
-			raise Exception(f"Card text did not match:\n{diff}")
+		actualCardTextLines = list(cardTextResult)
+		expectedCardTextLines = expectedCardText.split('\n')
+		if actualCardTextLines != expectedCardTextLines:
+			diff = '\n'.join(ndiff(expectedCardTextLines, actualCardTextLines))
+			raise Exception(f"Card text for {cardName} did not match:\n{diff}")
