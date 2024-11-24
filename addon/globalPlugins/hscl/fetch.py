@@ -30,6 +30,8 @@ def getCardFieldsIterator(cardName: str) -> Union[Iterable[str], str]:
 	data = fetchCardHtmlFromWiki(capitalized)
 	if isinstance(data, HTTPError) and capitalized != cardName:
 		data = fetchCardHtmlFromWiki(cardName)
+	else:
+		cardName = capitalized
 	if isinstance(data, HTTPError):
 		return f"Couldn't get card info for {cardName}: {data}"
 	set = matchLink("Card set", data)

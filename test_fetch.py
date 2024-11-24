@@ -1,7 +1,7 @@
 from difflib import ndiff
 from addon.globalPlugins.hscl import fetch
 
-angryChickenTextLines = """angry chicken
+angryChickenText = """Angry Chicken
 1 mana
 1 1
 Has +5 Attack while damaged.
@@ -13,7 +13,10 @@ Legacy
 <i>There is no beast more frightening (or ridiculous) than a fully enraged chicken.</i>"""
 
 def test_fetchMinion():
-	checkCardText('angry chicken' , angryChickenTextLines)
+	checkCardText('angry chicken' , angryChickenText)
+
+def test_minion_all_caps():
+	checkCardText('ANGRY CHICKEN', angryChickenText)
 
 def checkCardText(cardName: str, expectedCardText: str) -> None:
 	cardTextResult = fetch.getCardFieldsIterator(cardName)
