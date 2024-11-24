@@ -69,6 +69,19 @@ The less legible the band's logo, the more hardcore it is."""
 def test_runeCard():
 	checkCardText('Climactic Necrotic Explosion', climacticNecroticExplosion)
 
+si7Agent = """SI:7 Agent
+3 mana
+3 3
+Combo: Deal 2 damage.
+Minion
+Rogue
+Rare
+Legacy
+The agents of SI:7 are responsible for Stormwind's covert activities.  Their duties include espionage, assassination, and throwing surprise birthday parties for the royal family."""
+
+def test_si7():
+	checkCardText('si:7 agent', si7Agent)
+
 def checkCardText(cardName: str, expectedCardText: str) -> None:
 	cardTextResult = fetch.getCardFieldsIterator(cardName)
 	if isinstance(cardTextResult, str):
