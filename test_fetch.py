@@ -56,6 +56,19 @@ Curiously, this plant never blooms in the same place twice."""
 def test_multiclass():
 	checkCardText('lightning bloom', lightningBloomText)
 
+climacticNecroticExplosion = """Climactic Necrotic Explosion
+10 mana
+1 Blood, 1 Frost, 1 Unholy
+Lifesteal. Deal 6 damage. Summon 3 2/2 Souls. <i>(Randomly improved by Corpses you've spent)</i>
+Spell
+Death Knight
+Legendary
+Festival of Legends
+The less legible the band's logo, the more hardcore it is."""
+
+def test_runeCard():
+	checkCardText('Climactic Necrotic Explosion', climacticNecroticExplosion)
+
 def checkCardText(cardName: str, expectedCardText: str) -> None:
 	cardTextResult = fetch.getCardFieldsIterator(cardName)
 	if isinstance(cardTextResult, str):
