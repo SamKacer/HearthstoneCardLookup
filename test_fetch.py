@@ -43,6 +43,19 @@ Legacy
 def test_weapon():
 	checkCardText('fiery war axe', fieryWarAxeText)
 
+lightningBloomText = """Lightning Bloom
+0 mana
+Refresh 2 Mana Crystals. Overload: (2)
+Nature
+Spell
+Druid/Shaman
+Common
+Scholomance Academy
+<i>Curiously, this plant never blooms in the same place twice.</i>"""
+
+def test_multiclass():
+	checkCardText('lightning bloom', lightningBloomText)
+
 def checkCardText(cardName: str, expectedCardText: str) -> None:
 	cardTextResult = fetch.getCardFieldsIterator(cardName)
 	if isinstance(cardTextResult, str):
