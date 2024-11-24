@@ -58,6 +58,10 @@ def getCardFieldsIterator(cardName: str) -> Union[Iterable[str], str]:
 
 	match = re.search(r'(?sm)<div class="pi-item pi-data pi-item-spacing pi-border-color" data-source="flavor">.*?<center>(.*?)</center>', data)
 	flavor = match.group(1) if match else None
+	if flavor.startswith('<i>'):
+		flavor = flavor[3:]
+	if flavor.endswith('</i>'):
+		flavor = flavor[:-4]
 
 	match = re.search(r'(?sm)<div class="pi-item pi-data pi-item-spacing pi-border-color" data-source="text">.*?<center>(.*?)</center>', data)
 	text = re.sub(r'(<b>)|(</b>)', "", match.group(1)) if match else None

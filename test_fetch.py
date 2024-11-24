@@ -10,7 +10,7 @@ Minion
 Neutral
 Rare
 Legacy
-<i>There is no beast more frightening (or ridiculous) than a fully enraged chicken.</i>"""
+There is no beast more frightening (or ridiculous) than a fully enraged chicken."""
 
 def test_fetchMinion():
 	checkCardText('angry chicken' , angryChickenText)
@@ -26,7 +26,7 @@ Spell
 Mage
 Free
 Legacy
-<i>This spell is useful for burning things.  If you're looking for spells that toast things, or just warm them a little, you're in the wrong place.</i>"""
+This spell is useful for burning things.  If you're looking for spells that toast things, or just warm them a little, you're in the wrong place."""
 
 def test_fireball():
 	checkCardText('fireball', fireballText)
@@ -38,7 +38,7 @@ Weapon
 Warrior
 Free
 Legacy
-<i>During times of tranquility and harmony, this weapon was called by its less popular name, Chilly Peace Axe.</i>"""
+During times of tranquility and harmony, this weapon was called by its less popular name, Chilly Peace Axe."""
 
 def test_weapon():
 	checkCardText('fiery war axe', fieryWarAxeText)
@@ -51,7 +51,7 @@ Spell
 Druid/Shaman
 Common
 Scholomance Academy
-<i>Curiously, this plant never blooms in the same place twice.</i>"""
+Curiously, this plant never blooms in the same place twice."""
 
 def test_multiclass():
 	checkCardText('lightning bloom', lightningBloomText)
