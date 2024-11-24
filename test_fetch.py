@@ -18,6 +18,19 @@ def test_fetchMinion():
 def test_minion_all_caps():
 	checkCardText('ANGRY CHICKEN', angryChickenText)
 
+fireballText = """Fireball
+4 mana
+Deal 6 damage.
+Fire
+Spell
+Mage
+Free
+Legacy
+<i>This spell is useful for burning things.  If you're looking for spells that toast things, or just warm them a little, you're in the wrong place.</i>"""
+
+def test_fireball():
+	checkCardText('fireball', fireballText)
+
 def checkCardText(cardName: str, expectedCardText: str) -> None:
 	cardTextResult = fetch.getCardFieldsIterator(cardName)
 	if isinstance(cardTextResult, str):
