@@ -35,7 +35,7 @@ def getCardFieldsIterator(cardName: str) -> Union[Iterable[str], str]:
 	if isinstance(data, HTTPError):
 		return f"Couldn't get card info for {cardName}: {data}"
 	set = matchLink("Card set", data)
-	multiClass = matchPlainText("Multi-class", data)
+	multiClass = matchSequenceOfLinks("Classes", data)
 	class_ = matchLink("Class", data)
 	type = matchLink("Card type", data)
 	school = matchLink("Spell school", data)
@@ -116,6 +116,13 @@ def matchLinkDirectly(row: Optional[str]) -> Optional[str]:
 def matchSecondLink(label: str, row: str) -> Optional[str]:
 	m = re.search(r'(?sm)<a .*?</a><br><a .*?title="(.*?)">', row) if row else None
 	return m.group(1).strip() if m else None
+
+def matchSequenceOfLinks(label: str, string: str) -> Optional[str]:
+	row = matchRow(label, string)
+	subRows = row.split('</a>') if row else []
+	rawTexts = [matchLinkDirectly(subRow) for subRow in subRows]
+	filtered = [text for text in rawTexts if text]
+	return '/'.join(filtered) if filtered else None
 
 def matchNumberBeforeImg(label: str, string: str) -> Optional[str]:
 	row = matchRow(label, string)
