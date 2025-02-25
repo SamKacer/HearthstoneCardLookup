@@ -2,7 +2,7 @@
 
 This is an NVDA addon that lets users quickly lookup info for a specific Hearthstone card by its name.
 
-- [download stable version](https://github.com/SamKacer/HearthstoneCardLookup/releases/download/v0.10.1/HearthstoneCardLookup-0.10.1.nvda-addon)
+- [download stable version](https://github.com/SamKacer/HearthstoneCardLookup/releases/download/v0.10.2/HearthstoneCardLookup-0.10.2.nvda-addon)
 
 ## Usage
 
@@ -25,6 +25,10 @@ If you haven't heard the Tirion Fordring theme song, it's because it doesn't exi
 ``` 	
 
 ## Changelog
+
+### v0.10.2
+- fix classes not being shown for multi-class cards
+- updated last tested NVDA version to 2024.4.1
 
 ### v0.10.1
 - fix not all runes showing for cards that have multiple rune types like "Climactic Necrotic Explosion"
