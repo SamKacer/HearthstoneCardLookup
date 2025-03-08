@@ -1,0 +1,31 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: HearthstoneCardLookup\n"
+"POT-Creation-Date: 2025-02-28 10:31+0500\n"
+"PO-Revision-Date: 2025-02-28 10:33+0500\n"
+"Last-Translator: \n"
+"Language-Team: nvda.ru, Danil Kostenkov <danilkostenkov38@gmail.com>\n"
+"Language: ru_RU\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: Poedit 3.5\n"
+"X-Poedit-Basepath: ../../../..\n"
+"X-Poedit-SearchPath-0: .\n"
+"X-Poedit-SearchPath-1: addon/globalPlugins/hscl\n"
+
+#: addon/globalPlugins/hscl/hscl.py:85
+msgid ""
+"There is no selected text, the clipboard is also empty, or its content is "
+"not text!"
+msgstr ""
+"Нет выделенного текста, буфер обмена также пуст, или его содержимое не "
+"является текстом!"
+
+#: buildVars.py:23
+msgid "Hearthstone Card Lookup"
+msgstr "Поиск карт Hearthstone"
+
+#: buildVars.py:26
+msgid "Select a card name and lookup its stats."
+msgstr "Выбрать название карты и просмотреть её статистику."
