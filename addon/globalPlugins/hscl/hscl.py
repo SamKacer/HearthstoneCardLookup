@@ -17,14 +17,17 @@ class GlobalPlugin(globalPluginHandler.GlobalPlugin):
 	def __init__(self) -> None:
 		super().__init__()
 		self.dialogue = None
-	@script("Lookup Hearthstone card info for card name from selection or clipboard.", gesture="kb:NVDA+H")
+
+	# Translators: Name of command for lookingh up card info from selection or clipboard
+	@script(_("Lookup Hearthstone card info for card name from selection or clipboard."), gesture="kb:NVDA+H")
 	def script_lookupFromSelectionOrClipboard(self, gesture):
 		selection = getSelectedText().strip()
 		if selection:
 			lookupCardInfo(selection)
 
 
-	@script("Lookup Hearthstone card info for card name from user input.", gesture="kb:NVDA+shift+H")
+	# Translators: Name of command for opening dialogue for looking up card info from user input
+	@script(_("Lookup Hearthstone card info for card name from user input."), gesture="kb:NVDA+shift+H")
 	def script_lookupFromInput(self, gesture):
 		if self.dialogue:
 			if self.dialogue.IsActive():
@@ -49,7 +52,8 @@ class GlobalPlugin(globalPluginHandler.GlobalPlugin):
 
 
 def lookupCardInfo(cardName: str) -> None:
-	ui.message("fetching card info")
+	# Translators: the message output when the addon starts fetching the card info
+	ui.message(_("fetching card info"))
 	cardFieldsResult = getCardFieldsIterator(cardName)
 	if isinstance(cardFieldsResult, str):
 		# an error occured in fetching card fields
@@ -80,7 +84,7 @@ def getSelectedText() -> str:
 		except Exception:
 			text = ''
 		if not text or not isinstance(text, str):
-			# Translators: User has pressed the shortcut key for translating selected text,
+			# Translators: User has pressed the shortcut key for looking up a card from selected text,
 			# but no text was actually selected and clipboard is clear
 			ui.message(_("There is no selected text, the clipboard is also empty, or its content is not text!"))
 			return ''
