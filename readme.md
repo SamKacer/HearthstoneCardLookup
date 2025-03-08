@@ -2,7 +2,7 @@
 
 This is an NVDA addon that lets users quickly lookup info for a specific Hearthstone card by its name.
 
-- [download stable version](https://github.com/SamKacer/HearthstoneCardLookup/releases/download/v0.10.2/HearthstoneCardLookup-0.10.2.nvda-addon)
+- [download stable version](https://github.com/SamKacer/HearthstoneCardLookup/releases/download/v0.10.3/HearthstoneCardLookup-0.10.3.nvda-addon)
 
 ## Usage
 
@@ -25,6 +25,9 @@ If you haven't heard the Tirion Fordring theme song, it's because it doesn't exi
 ``` 	
 
 ## Changelog
+
+### v0.10.3
+- add russian localization (thanks to @Kostenkov-2021)
 
 ### v0.10.2
 - fix classes not being shown for multi-class cards

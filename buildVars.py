@@ -25,7 +25,7 @@ addon_info = {
 	# Translators: Long description to be shown for this add-on on add-on information from add-ons manager
 	"addon_description": _("Select a card name and lookup its stats."),
 	# version
-	"addon_version": "0.10.2",
+	"addon_version": "0.10.3",
 	# Author(s)
 	"addon_author": "Samuel Kacer <samuel.kacer@gmail.com",
 	# URL for the add-on documentation support
