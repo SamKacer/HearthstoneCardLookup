@@ -88,7 +88,7 @@ def getCardFieldsIterator(cardName: str) -> Union[Iterable[str], str]:
 def fetchCardHtmlFromWiki(cardName: str) -> Union[str, HTTPError]:
 	request = Request(
 		url='https://hearthstone.wiki.gg/wiki/' + quote(cardName),
-		    headers={'User-Agent': 'Mozilla/5.0'}
+		    headers={'User-Agent': 'curl/8.10.1'}
 	)
 	try:
 		return urlopen(request).read().decode('utf-8')	
