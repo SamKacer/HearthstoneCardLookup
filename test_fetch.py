@@ -72,7 +72,7 @@ def test_runeCard():
 si7Agent = """SI:7 Agent
 3 mana
 3 3
-Combo: Deal 2 damage.
+Combo: Deal 3 damage.
 Minion
 Rogue
 Rare
