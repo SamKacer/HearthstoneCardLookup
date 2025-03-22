@@ -1,8 +1,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: HearthstoneCardLookup\n"
-"POT-Creation-Date: 2025-02-28 10:31+0500\n"
-"PO-Revision-Date: 2025-02-28 10:33+0500\n"
+"POT-Creation-Date: 2025-03-19 09:08+0500\n"
+"PO-Revision-Date: 2025-03-19 09:12+0500\n"
 "Last-Translator: \n"
 "Language-Team: nvda.ru, Danil Kostenkov <danilkostenkov38@gmail.com>\n"
 "Language: ru_RU\n"
@@ -14,7 +14,23 @@ msgstr ""
 "X-Poedit-SearchPath-0: .\n"
 "X-Poedit-SearchPath-1: addon/globalPlugins/hscl\n"
 
-#: addon/globalPlugins/hscl/hscl.py:85
+#: addon/globalPlugins/hscl/hscl.py:22
+msgid "Lookup Hearthstone card info for card name from selection or clipboard."
+msgstr ""
+"Выполняет поиск информации о карте Hearthstone по названию карты из "
+"выделенного текста или буфера обмена."
+
+#: addon/globalPlugins/hscl/hscl.py:30
+msgid "Lookup Hearthstone card info for card name from user input."
+msgstr ""
+"Выполняет поиск информации о карте Hearthstone по названию карты, введённому "
+"пользователем."
+
+#: addon/globalPlugins/hscl/hscl.py:56
+msgid "fetching card info"
+msgstr "получение информации о карте"
+
+#: addon/globalPlugins/hscl/hscl.py:89
 msgid ""
 "There is no selected text, the clipboard is also empty, or its content is "
 "not text!"
@@ -28,4 +44,5 @@ msgstr "Поиск карт Hearthstone"
 
 #: buildVars.py:26
 msgid "Select a card name and lookup its stats."
-msgstr "Выбрать название карты и просмотреть её статистику."
+msgstr ""
+"Это дополнение позволяет выбирать название карты и просмотреть её статистику."
