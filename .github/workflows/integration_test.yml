@@ -14,3 +14,13 @@ jobs:
         python-version: '3.11'
     - run: pip install -r requirements.txt
     - run: pytest
+    - name: record date
+      if: always()
+      run: |
+        TODAY=$(date +%Y-%m-%d)
+        git config user.name "Github Action Bot" &&
+        git config user.email '<>' &&
+        echo $TODAY >integration_test_date.txt &&
+        git add integration_test_date.txt &&
+        git commit -m "Record integration test date as $TODAY" &&
+        git push
