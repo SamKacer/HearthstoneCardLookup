@@ -1,5 +1,6 @@
 name: Run integration tests
 on:
+  workflow_dispatch: {}
   schedule:
     # 7:55 AM on Saturdays
     - cron: 55 7 * * 6
