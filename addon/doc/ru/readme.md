@@ -1,6 +1,6 @@
-# Hearthstone Card Lookup (Поиск карт Hearthstone)
+# Hearthstone Card Lookup (Поиск карт в Hearthstone)
 
-Это дополнение для NVDA, которое позволяет пользователям быстро искать информацию о конкретной карте Hearthstone по её названию.
+Это дополнение для NVDA, которое позволяет пользователям быстро искать информацию о конкретной карте в Hearthstone по её названию.
 
 - [скачать стабильную версию](https://github.com/SamKacer/HearthstoneCardLookup/releases/download/v0.10.2/HearthstoneCardLookup-0.10.2.nvda-addon)
 
@@ -25,6 +25,9 @@
 ``` 	
 
 ## Журнал изменений
+
+### v0.10.5
+- добавлена дополнительная русская локализация от @Kostenkov-2021
 
 ### v0.10.4
 - исправлена HTTP-ошибка 403 при получении карты
