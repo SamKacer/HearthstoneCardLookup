@@ -1,5 +1,6 @@
 from difflib import ndiff
 from addon.globalPlugins.hscl import fetch
+import time
 
 angryChickenText = """Angry Chicken
 1 mana
@@ -82,10 +83,16 @@ The agents of SI:7 are responsible for Stormwind's covert activities.  Their dut
 def test_si7():
 	checkCardText('si:7 agent', si7Agent)
 
-def checkCardText(cardName: str, expectedCardText: str) -> None:
+def checkCardText(cardName: str, expectedCardText: str, attempt=0) -> None:
 	cardTextResult = fetch.getCardFieldsIterator(cardName)
 	if isinstance(cardTextResult, str):
-		raise Exception(f"Failed to fetch card text: {cardTextResult}")
+		if "HTTP Error 429" in cardTextResult and attempt < 7:
+			backoff = min(10, (2 * 2 ** attempt) / 10)
+			print(f"Failed due to rate limiting. Sleeping {backoff}s and retrying")
+			time.sleep(backoff)
+			checkCardText(cardName, expectedCardText, attempt + 1)
+		else: 
+			raise Exception(f"Failed to fetch card text: {cardTextResult}")
 	else:
 		actualCardTextLines = list(cardTextResult)
 		expectedCardTextLines = expectedCardText.split('\n')
