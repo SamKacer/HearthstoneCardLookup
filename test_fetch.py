@@ -83,11 +83,15 @@ The agents of SI:7 are responsible for Stormwind's covert activities.  Their dut
 def test_si7():
 	checkCardText('si:7 agent', si7Agent)
 
+max_attempts = 10
+max_backoff = 60
+starting_backoff = 2
+
 def checkCardText(cardName: str, expectedCardText: str, attempt=0) -> None:
 	cardTextResult = fetch.getCardFieldsIterator(cardName)
 	if isinstance(cardTextResult, str):
-		if "HTTP Error 429" in cardTextResult and attempt < 7:
-			backoff = min(10, (2 * 2 ** attempt) / 10)
+		if "HTTP Error 429" in cardTextResult and attempt < max_attempts:
+			backoff = min(max_backoff, (starting_backoff * 2 ** attempt))
 			print(f"Failed due to rate limiting. Sleeping {backoff}s and retrying")
 			time.sleep(backoff)
 			checkCardText(cardName, expectedCardText, attempt + 1)
