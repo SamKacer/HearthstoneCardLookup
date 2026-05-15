@@ -26,6 +26,10 @@ addon_info = {
 	"addon_description": _("Select a card name and lookup its stats."),
 	# version
 	"addon_version": "1.0.0",
+	# Brief changelog for this version
+	# Translators: what's new content for the add-on version to be shown in the add-on store
+	"addon_changelog": _("""- Update last tested NVDA version to 2026.1
+- Make NVDA responsive while fetching card info"""),
 	# Author(s)
 	"addon_author": "Samuel Kacer <samuel.kacer@gmail.com",
 	# URL for the add-on documentation support
