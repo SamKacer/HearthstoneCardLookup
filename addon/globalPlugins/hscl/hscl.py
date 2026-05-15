@@ -4,6 +4,8 @@
 # author: Samuel Kacer <samuel.kacer@gmail.com>
 # https://github.com/SamKacer/HearthstoneCardLookup
 
+import threading
+
 import api
 from .fetch import getCardFieldsIterator
 import globalPluginHandler
@@ -54,12 +56,15 @@ class GlobalPlugin(globalPluginHandler.GlobalPlugin):
 def lookupCardInfo(cardName: str) -> None:
 	# Translators: the message output when the addon starts fetching the card info
 	ui.message(_("fetching card info"))
-	cardFieldsResult = getCardFieldsIterator(cardName)
-	if isinstance(cardFieldsResult, str):
-		# an error occured in fetching card fields
-		ui.browseableMessage(cardFieldsResult)
-	else:
-		ui.browseableMessage('<p>' + '</p>\n<p>'.join(cardFieldsResult) + '</p>', cardName, True)
+	def doCardLookup():
+		cardFieldsResult = getCardFieldsIterator(cardName)
+		if isinstance(cardFieldsResult, str):
+			# an error occured in fetching card fields
+			wx.CallAfter(ui.browseableMessage, cardFieldsResult)
+		else:
+			wx.CallAfter(ui.browseableMessage, '<p>' + '</p>\n<p>'.join(cardFieldsResult) + '</p>', cardName, True)
+
+	threading.Thread(target=doCardLookup, daemon=True).start()
 
 
 # adapted from Quick Dictionary by Oleksandr Gryshchenko <grisov.nvaccess@mailnull.com>
